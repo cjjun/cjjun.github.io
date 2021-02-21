@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, Hexo">
+    <meta name="keywords" content="git commands, Hexo">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | Hexo</title>
+    <title>git commands | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">git commands</h1>
                 </div>
             </div>
         </div>
@@ -429,9 +429,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/git/">
+                                <span class="chip bg-color">git</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -443,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-02-19
+                    2021-02-21
                 </div>
                 
 
@@ -464,16 +468,37 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+                <h1 id="Git-commands"><a href="#Git-commands" class="headerlink" title="Git commands"></a>Git commands</h1><p>This is a brief recap of frequently used git commands and some important design ideas in git.</p>
+<h2 id="Initialization-and-status"><a href="#Initialization-and-status" class="headerlink" title="Initialization and status"></a>Initialization and status</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init directory</span><br></pre></td></tr></table></figure>
+<p>or </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd directory</span><br><span class="line">git init</span><br></pre></td></tr></table></figure>
+<p>Initialize a git-controlled directory. You can then use </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br><span class="line">git log</span><br></pre></td></tr></table></figure>
+<p> to check tracked status.</p>
+<h2 id="Indexed-tracked-and-stash"><a href="#Indexed-tracked-and-stash" class="headerlink" title="Indexed, tracked and stash"></a>Indexed, tracked and stash</h2><p>In principle, the following pseudocode can help to explain git behavior:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GitNode</span>&#123;</span></span><br><span class="line">    <span class="built_in">string</span> hashkey;</span><br><span class="line">    GitNode *prev;</span><br><span class="line">    <span class="built_in">string</span> CommitLog;</span><br><span class="line">    <span class="built_in">map</span>&lt;<span class="built_in">string</span>,snapshot&gt; TrackFilesSnapshot;</span><br><span class="line">    </span><br><span class="line">    GitNode()&#123;</span><br><span class="line">        <span class="comment">// Blank initialization</span></span><br><span class="line">        hashkey = Generate();</span><br><span class="line">        prev = <span class="literal">NULL</span>;</span><br><span class="line">        CommitLog = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    GitNode(GitNode &amp;prev)&#123;</span><br><span class="line">        hashkey = Generate();</span><br><span class="line">        prev = <span class="literal">NULL</span>;</span><br><span class="line">        CommitLog = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        copy(TrackFilesSnapshot, prev.TrackFilesSnapshot);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">CheckStatus</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// Compare current files with snaposhot recorded</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">Add</span><span class="params">(<span class="built_in">string</span> filename)</span></span>&#123;</span><br><span class="line">        <span class="comment">/* Check if filename exists in TrackFilesSnapshot.</span></span><br><span class="line"><span class="comment">        if so, update snapshot with current file, </span></span><br><span class="line"><span class="comment">        otherwise insert the snapshot.</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        TrackFilesSnapshot[filename] = f[filename]</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">bool</span> commit(mode m, <span class="built_in">string</span> s)&#123;</span><br><span class="line">        <span class="keyword">if</span>(m == <span class="string">&#x27;m&#x27;</span>)</span><br><span class="line">            CommitLog = s;</span><br><span class="line">        </span><br><span class="line">        else if(m == &#x27;am&#x27;)&#123;</span><br><span class="line">            <span class="built_in">map</span>&lt;<span class="built_in">string</span>,snapshot&gt;::iterator *it;</span><br><span class="line">            <span class="keyword">for</span>(it = TrackFilesSnapshot.begin(); it != TrackFilesSnapshot.end(); ++it)&#123;</span><br><span class="line">                <span class="keyword">if</span>( diff(f[it-&gt;first], it-&gt;second) )</span><br><span class="line">                    Add(it-&gt;first)</span><br><span class="line">                CommitLog = s</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            ...</span><br><span class="line">        <span class="comment">// Next, BranchHead = this;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Branch</span>&#123;</span></span><br><span class="line">    <span class="built_in">string</span> BranchName;</span><br><span class="line">    GitNode *HEAD = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GIT</span>&#123;</span></span><br><span class="line">    GitNode *HEAD;</span><br><span class="line">    Branch *branch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The following codes can track, add to cache, and update</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add filename            &#x2F;&#x2F; Track and update cache</span><br><span class="line">git commit -m &#39;message&#39;     &#x2F;&#x2F; Add cache to working directory</span><br></pre></td></tr></table></figure>
+<p><strong>Note:</strong> <code>git add</code> only create the snapshot when it’s called. If further updates are made, git will only adopt previous snapshot and stash it. Updates will be marked as revised.</p>
+<p>To update snapshot of tracked (previously or currently) files, use </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -am &#39;message&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="Branch-and-checkout"><a href="#Branch-and-checkout" class="headerlink" title="Branch and checkout"></a>Branch and checkout</h2><p> Personally, I would rather to consider node before considering branch. In fact, branch is a later developed trick to make chains more interpretable.</p>
+<p> Suppose you begin with a branch head pointer <code>BR_HEAD</code> and global head pointer <code>HEAD</code> in the same GitNode. At the same time, the system has already beginned editing a temporary uncollected GitNode. <code>Add</code> operation will change snaposhot of it, and commit operation will make it finished and corresponding branch linked-list will be extended.</p>
+<p> To create a branch (default branch is main) since current location, use<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch branch_name</span><br><span class="line">git checkout branch_name</span><br></pre></td></tr></table></figure><br>or simply<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b branch_name</span><br></pre></td></tr></table></figure><br>If you want to create branch for some branches, use</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch branch_name some_branch</span><br></pre></td></tr></table></figure>
+<p>Besides, <code>some_branch</code> can be any pointer, of branch, remote branch, etc. A useful usage is:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev origin&#x2F;dev</span><br></pre></td></tr></table></figure>
+<p>This will grab <code>dev</code> branch of remote space and create a branch <code>dev</code> at local workspace.</p>
+<p><strong>The simple rule is, branch is just a <code>reference</code>, i.e. a terminal-pointer of linked-list. It’s introduced to manage complexed DAG with clarity.</strong></p>
+<p>Checkout can not only jump to any branch, but also jump to any gitnode given hash reference. This concurs with previous assertion that branch is merely a pointer. To mange this detached node, git will create temporary detached branch to manage it as branch.</p>
+<p>Whenever <code>checkout</code> happens that <code>HEAD </code> leaves current branch, the temporary detached branch will be deleted. </p>
+<h2 id="Reset-revert-and-rebase"><a href="#Reset-revert-and-rebase" class="headerlink" title="Reset, revert and rebase"></a>Reset, revert and rebase</h2><p><code>Reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>Reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
+<p>There are three modes of <code>Reset</code>, which are:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--soft </span><br><span class="line">--mixed (default) </span><br><span class="line">--hard</span><br></pre></td></tr></table></figure>
+<p><code>--soft</code> moves <code>BR_HEAD</code> without changing temporary GitNode.</p>
+<p><code>--mixed</code> moves <code>BR_HEAD</code> and copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
+<p><code>--hard</code> moves <code>BR_HEAD</code>, resets all files from snapshot of <code>BR_HEAD</code>, then copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
+<h1 id="To-be-continued…"><a href="#To-be-continued…" class="headerlink" title="To be continued…"></a>To be continued…</h1>
                 
             </div>
             <hr/>
@@ -499,7 +524,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cjjun.github.io/2021/02/19/hello-world/">http://cjjun.github.io/2021/02/19/hello-world/</a>
+                    <a href="http://cjjun.github.io/2021/02/21/git-commands/">http://cjjun.github.io/2021/02/21/git-commands/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -536,7 +561,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/git/">
+                                    <span class="chip bg-color">git</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -588,9 +617,9 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="git commands">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">git commands</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -612,21 +641,13 @@
                     </div>
                 </div>
                 
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/git/">
-                        <span class="chip bg-color">git</span>
-                    </a>
-                    
-                </div>
-                
             </div>
         </div>
         
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="far fa-dot-circle"></i>
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2021/02/19/hello-world/">
@@ -656,7 +677,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
