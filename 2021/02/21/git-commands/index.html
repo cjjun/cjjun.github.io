@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, Hexo">
+    <meta name="keywords" content="git commands, Hexo">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | Hexo</title>
+    <title>git commands | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">git commands</h1>
                 </div>
             </div>
         </div>
@@ -429,9 +429,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/git/">
+                                <span class="chip bg-color">git</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -443,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-02-19
+                    2021-02-21
                 </div>
                 
 
@@ -467,16 +471,101 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo server<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo generate<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+                <h1 id="Git-commands"><a href="#Git-commands" class="headerlink" title="Git commands"></a>Git commands</h1><p>This is a brief recap of frequently used git commands and some important design ideas in git.</p>
+<h2 id="Initialization-and-status"><a href="#Initialization-and-status" class="headerlink" title="Initialization and status"></a>Initialization and status</h2><pre class="line-numbers language-git" data-language="git"><code class="language-git">git init directory<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>or </p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">cd directory
+git init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>Initialize a git-controlled directory. You can then use </p>
+<pre class="line-numbers language-none"><code class="language-none">git status
+git log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p> to check tracked status.</p>
+<h2 id="Indexed-tracked-and-stash"><a href="#Indexed-tracked-and-stash" class="headerlink" title="Indexed, tracked and stash"></a>Indexed, tracked and stash</h2><p>In principle, the following pseudocode can help to explain git behavior:</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">GitNode</span><span class="token punctuation">&#123;</span>
+    string hashkey<span class="token punctuation">;</span>
+    GitNode <span class="token operator">*</span>prev<span class="token punctuation">;</span>
+    string CommitLog<span class="token punctuation">;</span>
+    map<span class="token operator">&lt;</span>string<span class="token punctuation">,</span>snapshot<span class="token operator">></span> TrackFilesSnapshot<span class="token punctuation">;</span>
+    
+    <span class="token function">GitNode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token comment">// Blank initialization</span>
+        hashkey <span class="token operator">=</span> <span class="token function">Generate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        prev <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+        CommitLog <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
+    <span class="token function">GitNode</span><span class="token punctuation">(</span>GitNode <span class="token operator">&amp;</span>prev<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        hashkey <span class="token operator">=</span> <span class="token function">Generate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        prev <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+        CommitLog <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+        <span class="token function">copy</span><span class="token punctuation">(</span>TrackFilesSnapshot<span class="token punctuation">,</span> prev<span class="token punctuation">.</span>TrackFilesSnapshot<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">bool</span> <span class="token function">CheckStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token comment">// Compare current files with snaposhot recorded</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">bool</span> <span class="token function">Add</span><span class="token punctuation">(</span>string filename<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token comment">/* Check if filename exists in TrackFilesSnapshot.
+        if so, update snapshot with current file, 
+        otherwise insert the snapshot.
+        */</span>
+        TrackFilesSnapshot<span class="token punctuation">[</span>filename<span class="token punctuation">]</span> <span class="token operator">=</span> f<span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
+
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">bool</span> <span class="token function">commit</span><span class="token punctuation">(</span>mode m<span class="token punctuation">,</span> string s<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>m <span class="token operator">==</span> <span class="token string">'m'</span><span class="token punctuation">)</span>
+            CommitLog <span class="token operator">=</span> s<span class="token punctuation">;</span>
+        
+        <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>m <span class="token operator">==</span> <span class="token string">'am'</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            map<span class="token operator">&lt;</span>string<span class="token punctuation">,</span>snapshot<span class="token operator">></span><span class="token operator">::</span>iterator <span class="token operator">*</span>it<span class="token punctuation">;</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span>it <span class="token operator">=</span> TrackFilesSnapshot<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> TrackFilesSnapshot<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>it<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">diff</span><span class="token punctuation">(</span>f<span class="token punctuation">[</span>it<span class="token operator">-></span>first<span class="token punctuation">]</span><span class="token punctuation">,</span> it<span class="token operator">-></span>second<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+                    <span class="token function">Add</span><span class="token punctuation">(</span>it<span class="token operator">-></span>first<span class="token punctuation">)</span>
+                CommitLog <span class="token operator">=</span> s
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">else</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        <span class="token comment">// Next, BranchHead = this;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">class</span> <span class="token class-name">Branch</span><span class="token punctuation">&#123;</span>
+    string BranchName<span class="token punctuation">;</span>
+    GitNode <span class="token operator">*</span>HEAD <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">GIT</span><span class="token punctuation">&#123;</span>
+    GitNode <span class="token operator">*</span>HEAD<span class="token punctuation">;</span>
+    Branch <span class="token operator">*</span>branch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>The following codes can track, add to cache, and update</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git add filename            // Track and update cache
+git commit -m <span class="token string">'message'</span>     // Add cache to working directory<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>Note:</strong> <code>git add</code> only create the snapshot when it’s called. If further updates are made, git will only adopt previous snapshot and stash it. Updates will be marked as revised.</p>
+<p>To update snapshot of tracked (previously or currently) files, use </p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git commit -am <span class="token string">'message'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Branch-and-checkout"><a href="#Branch-and-checkout" class="headerlink" title="Branch and checkout"></a>Branch and checkout</h2><p> Personally, I would rather to consider node before considering branch. In fact, branch is a later developed trick to make chains more interpretable.</p>
+<p> Suppose you begin with a branch head pointer <code>BR_HEAD</code> and global head pointer <code>HEAD</code> in the same GitNode. At the same time, the system has already beginned editing a temporary uncollected GitNode. <code>Add</code> operation will change snaposhot of it, and commit operation will make it finished and corresponding branch linked-list will be extended.</p>
+<p> To create a branch (default branch is main) since current location, use<br> <pre class="line-numbers language-git" data-language="git"><code class="language-git">git branch branch_name
+git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br>or simply<br> <pre class="line-numbers language-git" data-language="git"><code class="language-git">git checkout -b branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>If you want to create branch for some branches, use</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git branch branch_name some_branch<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Besides, <code>some_branch</code> can be any pointer, of branch, remote branch, etc. A useful usage is:</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git checkout -b dev origin/dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>This will grab <code>dev</code> branch of remote space and create a branch <code>dev</code> at local workspace.</p>
+<p><strong>The simple rule is, branch is just a <code>reference</code>, i.e. a terminal-pointer of linked-list. It’s introduced to manage complexed DAG with clarity.</strong></p>
+<p>Checkout can not only jump to any branch, but also jump to any gitnode given hash reference. This concurs with previous assertion that branch is merely a pointer. To mange this detached node, git will create temporary detached branch to manage it as branch.</p>
+<p>Whenever <code>checkout</code> happens that <code>HEAD </code> leaves current branch, the temporary detached branch will be deleted. </p>
+<h2 id="Reset-revert-and-rebase"><a href="#Reset-revert-and-rebase" class="headerlink" title="Reset, revert and rebase"></a>Reset, revert and rebase</h2><p><code>Reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>Reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
+<p>There are three modes of <code>Reset</code>, which are:</p>
+<pre class="line-numbers language-none"><code class="language-none">--soft 
+--mixed (default) 
+--hard<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>--soft</code> moves <code>BR_HEAD</code> without changing temporary GitNode.</p>
+<p><code>--mixed</code> moves <code>BR_HEAD</code> and copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
+<p><code>--hard</code> moves <code>BR_HEAD</code>, resets all files from snapshot of <code>BR_HEAD</code>, then copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
+<h1 id="To-be-continued…"><a href="#To-be-continued…" class="headerlink" title="To be continued…"></a>To be continued…</h1>
                 
             </div>
             <hr/>
@@ -502,7 +591,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cjjun.github.io/2021/02/19/hello-world/">http://cjjun.github.io/2021/02/19/hello-world/</a>
+                    <a href="http://cjjun.github.io/2021/02/21/git-commands/">http://cjjun.github.io/2021/02/21/git-commands/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -539,7 +628,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/git/">
+                                    <span class="chip bg-color">git</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -583,9 +676,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2021/02/21/git-commands/">
                     <div class="card-image">
@@ -603,9 +697,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -614,6 +708,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -629,7 +724,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                Current&nbsp;<i class="far fa-dot-circle"></i>
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2021/02/19/hello-world/">
@@ -659,7 +754,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
