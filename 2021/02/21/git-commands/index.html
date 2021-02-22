@@ -472,15 +472,15 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="Git-commands"><a href="#Git-commands" class="headerlink" title="Git commands"></a>Git commands</h1><p>This is a brief recap of frequently used git commands and some important design ideas in git.</p>
-<h2 id="Initialization-and-status"><a href="#Initialization-and-status" class="headerlink" title="Initialization and status"></a>Initialization and status</h2><pre class="line-numbers language-git" data-language="git"><code class="language-git">git init directory<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="1-Initialization-and-status"><a href="#1-Initialization-and-status" class="headerlink" title="1. Initialization and status"></a>1. Initialization and status</h1><pre class="line-numbers language-git" data-language="git"><code class="language-git">git init directory<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>or </p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">cd directory
 git init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>Initialize a git-controlled directory. You can then use </p>
-<pre class="line-numbers language-none"><code class="language-none">git status
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git status
 git log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p> to check tracked status.</p>
-<h2 id="Indexed-tracked-and-stash"><a href="#Indexed-tracked-and-stash" class="headerlink" title="Indexed, tracked and stash"></a>Indexed, tracked and stash</h2><p>In principle, the following pseudocode can help to explain git behavior:</p>
+<h1 id="2-Indexed-tracked-and-stash"><a href="#2-Indexed-tracked-and-stash" class="headerlink" title="2. Indexed, tracked and stash"></a>2. Indexed, tracked and stash</h1><p>In principle, the following pseudocode can help to explain git behavior:</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">GitNode</span><span class="token punctuation">&#123;</span>
     string hashkey<span class="token punctuation">;</span>
     GitNode <span class="token operator">*</span>prev<span class="token punctuation">;</span>
@@ -546,7 +546,7 @@ git commit -m <span class="token string">'message'</span>     // Add cache to wo
 <p><strong>Note:</strong> <code>git add</code> only create the snapshot when it’s called. If further updates are made, git will only adopt previous snapshot and stash it. Updates will be marked as revised.</p>
 <p>To update snapshot of tracked (previously or currently) files, use </p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">git commit -am <span class="token string">'message'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h2 id="Branch-and-checkout"><a href="#Branch-and-checkout" class="headerlink" title="Branch and checkout"></a>Branch and checkout</h2><p> Personally, I would rather to consider node before considering branch. In fact, branch is a later developed trick to make chains more interpretable.</p>
+<h1 id="3-Branch-and-checkout"><a href="#3-Branch-and-checkout" class="headerlink" title="3. Branch and checkout"></a>3. Branch and checkout</h1><p> Personally, I would rather to consider node before considering branch. In fact, branch is a later developed trick to make chains more interpretable.</p>
 <p> Suppose you begin with a branch head pointer <code>BR_HEAD</code> and global head pointer <code>HEAD</code> in the same GitNode. At the same time, the system has already beginned editing a temporary uncollected GitNode. <code>Add</code> operation will change snaposhot of it, and commit operation will make it finished and corresponding branch linked-list will be extended.</p>
 <p> To create a branch (default branch is main) since current location, use<br> <pre class="line-numbers language-git" data-language="git"><code class="language-git">git branch branch_name
 git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br>or simply<br> <pre class="line-numbers language-git" data-language="git"><code class="language-git">git checkout -b branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>If you want to create branch for some branches, use</p>
@@ -557,7 +557,7 @@ git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span
 <p><strong>The simple rule is, branch is just a <code>reference</code>, i.e. a terminal-pointer of linked-list. It’s introduced to manage complexed DAG with clarity.</strong></p>
 <p>Checkout can not only jump to any branch, but also jump to any gitnode given hash reference. This concurs with previous assertion that branch is merely a pointer. To mange this detached node, git will create temporary detached branch to manage it as branch.</p>
 <p>Whenever <code>checkout</code> happens that <code>HEAD </code> leaves current branch, the temporary detached branch will be deleted. </p>
-<h2 id="Reset-revert-and-rebase"><a href="#Reset-revert-and-rebase" class="headerlink" title="Reset, revert and rebase"></a>Reset, revert and rebase</h2><p><code>Reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>Reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
+<h1 id="4-Reset-revert-and-rebase"><a href="#4-Reset-revert-and-rebase" class="headerlink" title="4. Reset, revert and rebase"></a>4. Reset, revert and rebase</h1><p><code>Reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>Reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
 <p>There are three modes of <code>Reset</code>, which are:</p>
 <pre class="line-numbers language-none"><code class="language-none">--soft 
 --mixed (default) 
@@ -565,7 +565,7 @@ git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span
 <p><code>--soft</code> moves <code>BR_HEAD</code> without changing temporary GitNode.</p>
 <p><code>--mixed</code> moves <code>BR_HEAD</code> and copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
 <p><code>--hard</code> moves <code>BR_HEAD</code>, resets all files from snapshot of <code>BR_HEAD</code>, then copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
-<h1 id="To-be-continued…"><a href="#To-be-continued…" class="headerlink" title="To be continued…"></a>To be continued…</h1>
+<h1 id="5-To-be-continued…"><a href="#5-To-be-continued…" class="headerlink" title="5. To be continued…"></a>5. To be continued…</h1>
                 
             </div>
             <hr/>
