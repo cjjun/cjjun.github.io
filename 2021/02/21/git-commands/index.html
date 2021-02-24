@@ -570,20 +570,15 @@ git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span
 HEAD~n      (Move n steps back)
 HEAD@&#123;n&#125;    (Move n step(s) forward)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h2 id="4-2-revert"><a href="#4-2-revert" class="headerlink" title="4.2. revert"></a>4.2. revert</h2><pre class="line-numbers language-none"><code class="language-none">revert -n [target]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<pre class="line-numbers language-revert```" data-language="revert```"><div class="caption"><span>is different from  ``reset``, it basically computes change between target and its predecessor</span></div><code class="language-revert```">(i.e. &#96;&#96;target^&#96;&#96; - &#96;&#96;target&#96;&#96;), the difference will be applied to current cache.
-
-Suppose the difference (inversely) includes three parts: &#96;&#96;add&#96;&#96;, &#96;&#96;remove&#96;&#96;, and &#96;&#96;revision&#96;&#96;. &#96;&#96;add&#96;&#96; and &#96;&#96;revision&#96;&#96; will be copied to cache, and conflicts will be needed for solutions. The interesting part is &#96;&#96;remove&#96;&#96;. 
-
-If the files have not been changed since target version (we mean temporary gitnode), they will be deleted without doubt. If somethings happens, it will not be removed, and revert will fail. In this case, we have to delete those files manually.
-
-## 4.3. rebase
-&#96;&#96;rebase&#96;&#96; can update previous commits in more complex ways. A typical usage is merging commits.
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>pick xxxx<br>fixup xxxx<br>squash xxxx</p>
-<pre class="line-numbers language-none"><code class="language-none">## 4.4. restore
-&#96;&#96;&#96;git
-git restore [target]    &#x2F;&#x2F; Restore files to snapshot in TrackFilesSnapshot
-git restore --staged    &#x2F;&#x2F; Remove file from tracked directory but not change its content)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>revert</code> is different from  <code>reset</code>, it basically computes change between target and its predecessor<br>(i.e. <code>target^</code> - <code>target</code>), the difference will be applied to current cache.</p>
+<p>Suppose the difference (inversely) includes three parts: <code>add</code>, <code>remove</code>, and <code>revision</code>. <code>add</code> and <code>revision</code> will be copied to cache, and conflicts will be needed for solutions. The interesting part is <code>remove</code>. </p>
+<p>If the files have not been changed since target version (we mean temporary gitnode), they will be deleted without doubt. If somethings happens, it will not be removed, and revert will fail. In this case, we have to delete those files manually.</p>
+<h2 id="4-3-rebase"><a href="#4-3-rebase" class="headerlink" title="4.3. rebase"></a>4.3. rebase</h2><p><code>rebase</code> can update previous commits in more complex ways. A typical usage is merging commits.</p>
+<pre class="line-numbers language-none"><code class="language-none">pick xxxx
+fixup xxxx
+squash xxxx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-4-restore"><a href="#4-4-restore" class="headerlink" title="4.4. restore"></a>4.4. restore</h2><pre class="line-numbers language-git" data-language="git"><code class="language-git">git restore [target]    // Restore files to snapshot in TrackFilesSnapshot
+git restore --staged    // Remove file from tracked directory but not change its content)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>To understand how git recognize difference, check the link <a target="_blank" rel="noopener" href="https://cjting.me/2017/05/13/how-git-generate-diff/">Myer algorithm</a></strong>.</p>
 <h1 id="5-Remote-warehouse"><a href="#5-Remote-warehouse" class="headerlink" title="5. Remote warehouse"></a>5. Remote warehouse</h1><p>Add remote source <code>origin</code></p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">git remote add origin git@github.com:/xxx/xxx.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
