@@ -471,7 +471,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Git-commands"><a href="#Git-commands" class="headerlink" title="Git commands"></a>Git commands</h1><p>This is a brief recap of frequently used git commands and some important design ideas in git.</p>
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Git-commands"><a href="#Git-commands" class="headerlink" title="Git commands"></a>Git commands</h1><p>This is a brief recap of frequently used git commands and some important design ideas in git.</p>
 <h1 id="1-Initialization-and-status"><a href="#1-Initialization-and-status" class="headerlink" title="1. Initialization and status"></a>1. Initialization and status</h1><pre class="line-numbers language-git" data-language="git"><code class="language-git">git init directory<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>or </p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">cd directory
@@ -480,7 +480,7 @@ git init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">git status
 git log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p> to check tracked status.</p>
-<h1 id="2-Indexed-tracked-and-stash"><a href="#2-Indexed-tracked-and-stash" class="headerlink" title="2. Indexed, tracked and stash"></a>2. Indexed, tracked and stash</h1><p>In principle, the following pseudocode can help to explain git behavior:</p>
+<h1 id="2-Working-directory-stage-repository"><a href="#2-Working-directory-stage-repository" class="headerlink" title="2. Working directory, stage, repository"></a>2. Working directory, stage, repository</h1><p>In principle, the following pseudocode can help to explain git behavior:</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">GitNode</span><span class="token punctuation">&#123;</span>
     string hashkey<span class="token punctuation">;</span>
     GitNode <span class="token operator">*</span>prev<span class="token punctuation">;</span>
@@ -557,15 +557,63 @@ git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span
 <p><strong>The simple rule is, branch is just a <code>reference</code>, i.e. a terminal-pointer of linked-list. It’s introduced to manage complexed DAG with clarity.</strong></p>
 <p>Checkout can not only jump to any branch, but also jump to any gitnode given hash reference. This concurs with previous assertion that branch is merely a pointer. To mange this detached node, git will create temporary detached branch to manage it as branch.</p>
 <p>Whenever <code>checkout</code> happens that <code>HEAD </code> leaves current branch, the temporary detached branch will be deleted. </p>
-<h1 id="4-Reset-revert-and-rebase"><a href="#4-Reset-revert-and-rebase" class="headerlink" title="4. Reset, revert and rebase"></a>4. Reset, revert and rebase</h1><p><code>Reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>Reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
-<p>There are three modes of <code>Reset</code>, which are:</p>
+<h1 id="4-Reset-revert-rebase-restore"><a href="#4-Reset-revert-rebase-restore" class="headerlink" title="4. Reset, revert, rebase, restore"></a>4. Reset, revert, rebase, restore</h1><h2 id="4-1-reset"><a href="#4-1-reset" class="headerlink" title="4.1. reset"></a>4.1. reset</h2><p><code>reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
+<p>There are three modes of <code>reset</code>, which are:</p>
 <pre class="line-numbers language-none"><code class="language-none">--soft 
 --mixed (default) 
 --hard<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><code>--soft</code> moves <code>BR_HEAD</code> without changing temporary GitNode.</p>
-<p><code>--mixed</code> moves <code>BR_HEAD</code> and copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
-<p><code>--hard</code> moves <code>BR_HEAD</code>, resets all files from snapshot of <code>BR_HEAD</code>, then copies <code>TrackFilesSnapshot</code> of temporary GitNode from <code>BR_HEAD</code>.</p>
-<h1 id="5-To-be-continued…"><a href="#5-To-be-continued…" class="headerlink" title="5. To be continued…"></a>5. To be continued…</h1>
+<p><code>--mixed</code> moves <code>BR_HEAD</code> and copies <code>TrackFilesSnapshot</code> to temporary GitNode from <code>BR_HEAD</code>. This leads to discard of currently uncommited operations.</p>
+<p><code>--hard</code> moves <code>BR_HEAD</code>, resets all files from snapshot of <code>BR_HEAD</code>, then create a new temporary GitNode from <code>BR_HEAD</code>.</p>
+<p>There are several use syntax:</p>
+<pre class="line-numbers language-none"><code class="language-none">HEAD^       (Move back 1 step)
+HEAD~n      (Move n steps back)
+HEAD@&#123;n&#125;    (Move n step(s) forward)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-2-revert"><a href="#4-2-revert" class="headerlink" title="4.2. revert"></a>4.2. revert</h2><pre class="line-numbers language-none"><code class="language-none">revert -n [target]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-revert```" data-language="revert```"><div class="caption"><span>is different from  ``reset``, it basically computes change between target and its predecessor</span></div><code class="language-revert```">(i.e. &#96;&#96;target^&#96;&#96; - &#96;&#96;target&#96;&#96;), the difference will be applied to current cache.
+
+Suppose the difference (inversely) includes three parts: &#96;&#96;add&#96;&#96;, &#96;&#96;remove&#96;&#96;, and &#96;&#96;revision&#96;&#96;. &#96;&#96;add&#96;&#96; and &#96;&#96;revision&#96;&#96; will be copied to cache, and conflicts will be needed for solutions. The interesting part is &#96;&#96;remove&#96;&#96;. 
+
+If the files have not been changed since target version (we mean temporary gitnode), they will be deleted without doubt. If somethings happens, it will not be removed, and revert will fail. In this case, we have to delete those files manually.
+
+## 4.3. rebase
+&#96;&#96;rebase&#96;&#96; can update previous commits in more complex ways. A typical usage is merging commits.
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>pick xxxx<br>fixup xxxx<br>squash xxxx</p>
+<pre class="line-numbers language-none"><code class="language-none">## 4.4. restore
+&#96;&#96;&#96;git
+git restore [target]    &#x2F;&#x2F; Restore files to snapshot in TrackFilesSnapshot
+git restore --staged    &#x2F;&#x2F; Remove file from tracked directory but not change its content)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>To understand how git recognize difference, check the link <a target="_blank" rel="noopener" href="https://cjting.me/2017/05/13/how-git-generate-diff/">Myer algorithm</a></strong>.</p>
+<h1 id="5-Remote-warehouse"><a href="#5-Remote-warehouse" class="headerlink" title="5. Remote warehouse"></a>5. Remote warehouse</h1><p>Add remote source <code>origin</code></p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git remote add origin git@github.com:/xxx/xxx.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Push current branch and set associate it with upstream</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git push -u &lt;remote> &lt;branch>
+git push --set-upstream &lt;remote> &lt;branch><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>correspongdingly, pull remote branch to current branch</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git pull &lt;remote> &lt;branch> 
+git pull --set-upstream &lt;remote> &lt;branch><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>fetch</code> serves the same function:</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git pull &lt;remote> &lt;branch> 
+git fetch --set-upstream &lt;remote> &lt;branch><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>The difference is that <code>fetch</code> returns pointer <code>FETCH_HEAD</code> for youself to dermine, while <code>pull</code> automatically merge <code>FETCH_HEAD</code> with current branch.</p>
+<p>Once you set upstream, all operations can be simplified as  <code>git push</code>, <code>git pull</code>. Please always save your commit before executing <code>pull</code> or <code>merge</code> operation.</p>
+<p>In local remote management, you can use</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git remote add &lt;nickname> &lt;remote-url>
+git remote rename &lt;old_name> &lt;new_name>
+git remote remove &lt;nickname><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>Furthermore, if you want to operate on remote warehouse directly, here are some commands:</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git push &lt;remote> --delete &lt;branch> // delete remove branch
+git remote prune &lt;remote>  // prune a local branch whose upstrea has been deleted
+git fetch -p    //equivalent to commands above<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>To rename a remote branch, tracked by local branch with same name, use</p>
+<pre class="line-numbers language-git" data-language="git"><code class="language-git">git push &lt;remote> --delete &lt;old_name> 
+git branch -m &lt;old_name> &lt;new_name>
+git checkout &lt;new_name>
+git push -u &lt;remote>  &lt;new_name> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>If the <code>&lt;old_name&gt;</code> is the default branch, you have to set another branch as default.</p>
+<!-- # 5. To be continued... -->
+
                 
             </div>
             <hr/>
