@@ -472,7 +472,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Git-commands"><a href="#Git-commands" class="headerlink" title="Git commands"></a>Git commands</h1><p>This is a brief recap of frequently used git commands and some important design ideas in git.</p>
-<h1 id="1-Initialization-and-status"><a href="#1-Initialization-and-status" class="headerlink" title="1. Initialization and status"></a>1. Initialization and status</h1><pre class="line-numbers language-git" data-language="git"><code class="language-git">git init directory<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="1-Initialization-and-status"><a href="#1-Initialization-and-status" class="headerlink" title="1. Initialization and status"></a>1. Initialization and status</h2><pre class="line-numbers language-git" data-language="git"><code class="language-git">git init directory<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>or </p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">cd directory
 git init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -480,7 +480,7 @@ git init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">git status
 git log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p> to check tracked status.</p>
-<h1 id="2-Working-directory-stage-repository"><a href="#2-Working-directory-stage-repository" class="headerlink" title="2. Working directory, stage, repository"></a>2. Working directory, stage, repository</h1><p>In principle, the following pseudocode can help to explain git behavior:</p>
+<h2 id="2-Working-directory-stage-repository"><a href="#2-Working-directory-stage-repository" class="headerlink" title="2. Working directory, stage, repository"></a>2. Working directory, stage, repository</h2><p>In principle, the following pseudocode can help to explain git behavior:</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">GitNode</span><span class="token punctuation">&#123;</span>
     string hashkey<span class="token punctuation">;</span>
     GitNode <span class="token operator">*</span>prev<span class="token punctuation">;</span>
@@ -546,7 +546,7 @@ git commit -m <span class="token string">'message'</span>     // Add cache to wo
 <p><strong>Note:</strong> <code>git add</code> only create the snapshot when it’s called. If further updates are made, git will only adopt previous snapshot and stash it. Updates will be marked as revised.</p>
 <p>To update snapshot of tracked (previously or currently) files, use </p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">git commit -am <span class="token string">'message'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h1 id="3-Branch-and-checkout"><a href="#3-Branch-and-checkout" class="headerlink" title="3. Branch and checkout"></a>3. Branch and checkout</h1><p> Personally, I would rather to consider node before considering branch. In fact, branch is a later developed trick to make chains more interpretable.</p>
+<h2 id="3-Branch-and-checkout"><a href="#3-Branch-and-checkout" class="headerlink" title="3. Branch and checkout"></a>3. Branch and checkout</h2><p> Personally, I would rather to consider node before considering branch. In fact, branch is a later developed trick to make chains more interpretable.</p>
 <p> Suppose you begin with a branch head pointer <code>BR_HEAD</code> and global head pointer <code>HEAD</code> in the same GitNode. At the same time, the system has already beginned editing a temporary uncollected GitNode. <code>Add</code> operation will change snaposhot of it, and commit operation will make it finished and corresponding branch linked-list will be extended.</p>
 <p> To create a branch (default branch is main) since current location, use<br> <pre class="line-numbers language-git" data-language="git"><code class="language-git">git branch branch_name
 git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br>or simply<br> <pre class="line-numbers language-git" data-language="git"><code class="language-git">git checkout -b branch_name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br>If you want to create branch for some branches, use</p>
@@ -557,7 +557,7 @@ git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span
 <p><strong>The simple rule is, branch is just a <code>reference</code>, i.e. a terminal-pointer of linked-list. It’s introduced to manage complexed DAG with clarity.</strong></p>
 <p>Checkout can not only jump to any branch, but also jump to any gitnode given hash reference. This concurs with previous assertion that branch is merely a pointer. To mange this detached node, git will create temporary detached branch to manage it as branch.</p>
 <p>Whenever <code>checkout</code> happens that <code>HEAD </code> leaves current branch, the temporary detached branch will be deleted. </p>
-<h1 id="4-Reset-revert-rebase-restore"><a href="#4-Reset-revert-rebase-restore" class="headerlink" title="4. Reset, revert, rebase, restore"></a>4. Reset, revert, rebase, restore</h1><h2 id="4-1-reset"><a href="#4-1-reset" class="headerlink" title="4.1. reset"></a>4.1. reset</h2><p><code>reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
+<h2 id="4-Reset-revert-rebase-restore"><a href="#4-Reset-revert-rebase-restore" class="headerlink" title="4. Reset, revert, rebase, restore"></a>4. Reset, revert, rebase, restore</h2><h3 id="4-1-Reset"><a href="#4-1-Reset" class="headerlink" title="4.1. Reset"></a>4.1. Reset</h3><p><code>reset</code> is operation regarding <code>BR_HEAD</code>. Tracking backwardly from <code>BR_HEAD</code>, a complete linked-list can be found. <code>reset</code> is manipulating this linked-list, plus the temporarily processing GitNode, which has not yet been attached to branch.</p>
 <p>There are three modes of <code>reset</code>, which are:</p>
 <pre class="line-numbers language-none"><code class="language-none">--soft 
 --mixed (default) 
@@ -569,18 +569,18 @@ git checkout branch_name<span aria-hidden="true" class="line-numbers-rows"><span
 <pre class="line-numbers language-none"><code class="language-none">HEAD^       (Move back 1 step)
 HEAD~n      (Move n steps back)
 HEAD@&#123;n&#125;    (Move n step(s) forward)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h2 id="4-2-revert"><a href="#4-2-revert" class="headerlink" title="4.2. revert"></a>4.2. revert</h2><pre class="line-numbers language-none"><code class="language-none">revert -n [target]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="4-2-Revert"><a href="#4-2-Revert" class="headerlink" title="4.2. Revert"></a>4.2. Revert</h3><pre class="line-numbers language-none"><code class="language-none">revert -n [target]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>revert</code> is different from  <code>reset</code>, it basically computes change between target and its predecessor<br>(i.e. <code>target^</code> - <code>target</code>), the difference will be applied to current cache.</p>
 <p>Suppose the difference (inversely) includes three parts: <code>add</code>, <code>remove</code>, and <code>revision</code>. <code>add</code> and <code>revision</code> will be copied to cache, and conflicts will be needed for solutions. The interesting part is <code>remove</code>. </p>
 <p>If the files have not been changed since target version (we mean temporary gitnode), they will be deleted without doubt. If somethings happens, it will not be removed, and revert will fail. In this case, we have to delete those files manually.</p>
-<h2 id="4-3-rebase"><a href="#4-3-rebase" class="headerlink" title="4.3. rebase"></a>4.3. rebase</h2><p><code>rebase</code> can update previous commits in more complex ways. A typical usage is merging commits.</p>
+<h3 id="4-3-Rebase"><a href="#4-3-Rebase" class="headerlink" title="4.3. Rebase"></a>4.3. Rebase</h3><p><code>rebase</code> can update previous commits in more complex ways. A typical usage is merging commits.</p>
 <pre class="line-numbers language-none"><code class="language-none">pick xxxx
 fixup xxxx
 squash xxxx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h2 id="4-4-restore"><a href="#4-4-restore" class="headerlink" title="4.4. restore"></a>4.4. restore</h2><pre class="line-numbers language-git" data-language="git"><code class="language-git">git restore [target]    // Restore files to snapshot in TrackFilesSnapshot
+<h2 id="5-Restore"><a href="#5-Restore" class="headerlink" title="5. Restore"></a>5. Restore</h2><pre class="line-numbers language-git" data-language="git"><code class="language-git">git restore [target]    // Restore files to snapshot in TrackFilesSnapshot
 git restore --staged    // Remove file from tracked directory but not change its content)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><strong>To understand how git recognize difference, check the link <a target="_blank" rel="noopener" href="https://cjting.me/2017/05/13/how-git-generate-diff/">Myer algorithm</a></strong>.</p>
-<h1 id="5-Remote-warehouse"><a href="#5-Remote-warehouse" class="headerlink" title="5. Remote warehouse"></a>5. Remote warehouse</h1><p>Add remote source <code>origin</code></p>
+<h2 id="6-Remote-warehouse"><a href="#6-Remote-warehouse" class="headerlink" title="6. Remote warehouse"></a>6. Remote warehouse</h2><p>Add remote source <code>origin</code></p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">git remote add origin git@github.com:/xxx/xxx.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Push current branch and set associate it with upstream</p>
 <pre class="line-numbers language-git" data-language="git"><code class="language-git">git push -u &lt;remote> &lt;branch>
@@ -719,18 +719,17 @@ git push -u &lt;remote>  &lt;new_name> <span aria-hidden="true" class="line-numb
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/02/21/git-commands/">
+                <a href="/2021/02/22/RL-part-1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Git commands">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="RL introduction (I)--MDP and DP">
                         
-                        <span class="card-title">Git commands</span>
+                        <span class="card-title">RL introduction (I)--MDP and DP</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -740,9 +739,9 @@ git push -u &lt;remote>  &lt;new_name> <span aria-hidden="true" class="line-numb
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-21
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-22
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -751,12 +750,19 @@ git push -u &lt;remote>  &lt;new_name> <span aria-hidden="true" class="line-numb
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/git/">
-                        <span class="chip bg-color">git</span>
+                    <a href="/tags/RL/">
+                        <span class="chip bg-color">RL</span>
+                    </a>
+                    
+                    <a href="/tags/MDP/">
+                        <span class="chip bg-color">MDP</span>
+                    </a>
+                    
+                    <a href="/tags/DP/">
+                        <span class="chip bg-color">DP</span>
                     </a>
                     
                 </div>
