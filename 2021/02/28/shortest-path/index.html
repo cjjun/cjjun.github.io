@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="RL introduction (I)--MDP and DP, Jonderland">
+    <meta name="keywords" content="Shortest path--Dijkstra, Bellman-ford and FLoyd, Jonderland">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>RL introduction (I)--MDP and DP | Jonderland</title>
+    <title>Shortest path--Dijkstra, Bellman-ford and FLoyd | Jonderland</title>
     <link rel="icon" type="image/png" href="/DDbird.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">RL introduction (I)--MDP and DP</h1>
+                    <h1 class="description center-align post-title">Shortest path--Dijkstra, Bellman-ford and FLoyd</h1>
                 </div>
             </div>
         </div>
@@ -431,16 +431,16 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/RL/">
-                                <span class="chip bg-color">RL</span>
+                            <a href="/tags/Shortest-Path/">
+                                <span class="chip bg-color">Shortest Path</span>
                             </a>
                         
-                            <a href="/tags/MDP/">
-                                <span class="chip bg-color">MDP</span>
+                            <a href="/tags/Dijkstra/">
+                                <span class="chip bg-color">Dijkstra</span>
                             </a>
                         
-                            <a href="/tags/DP/">
-                                <span class="chip bg-color">DP</span>
+                            <a href="/tags/FLoyd/">
+                                <span class="chip bg-color">FLoyd</span>
                             </a>
                         
                     </div>
@@ -455,7 +455,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-02-22
+                    2021-02-28
                 </div>
                 
 
@@ -479,7 +479,113 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="TEST"><a href="#TEST" class="headerlink" title="TEST"></a>TEST</h1><p>This is a ref <img src="/2021/02/22/RL-part-1/01.png"> ss @</p>
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Shortest-path-algorithm"><a href="#Shortest-path-algorithm" class="headerlink" title="Shortest path algorithm"></a>Shortest path algorithm</h1><h2 id="1-Dijkstra"><a href="#1-Dijkstra" class="headerlink" title="1. Dijkstra"></a>1. Dijkstra</h2><p>Given a graph <code>G=(V, E)</code> with positive edge and a source edge <code>S</code>, how to find the shortest path/distance from <code>S</code> to any vertex? </p>
+<p>Dijkstra’s algorithm works as follow. Given a <strong>Known set K</strong> and distrance function $D_S(x)$ for $x \in K$, initialized with $K={S}$, $D_S(S) = 0$.</p>
+<p>By induction, suppose we have already known shortest distance between $S$ and vertices in $K$. Suppose vertices in set $N$ are adjacent to set $K$. We can find the distance $d_S(y)$ for $y\in N$ by simply stretching from $K$ to $N$.</p>
+<p>If $y^*=\argmin_{y \in N} d_S(y)$, the we claim $D_s(y^*)=d_s(y^*)$. The reason is fairly simple: if there is a better path s – x -|- y – y*, where ${s, x} \subseteq K$, ${y, y^*} \subseteq N$, obviously </p>
+<p>$$<br>\begin{aligned}<br>D_S(y^*) &amp;= D_S(x) + d(x,y) + D_y(y^*) \<br>    &amp;= D_S(y) + D_y(y^*) \<br>    &amp;\ge D_S(y^*)<br>\end{aligned} \tag{1}<br>$$<br>By premisis of the problem, the equation holds true only when $D_S(y)=D_S(y^*)$ and $D_y(y^*)=0$. Obviously, this can take place only when $y=y^*$. Therefore we update by letting $N’=N+{y^<em>}$, $D_S(y^</em>)=d_S(y^*)$</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token comment">// Dijkstra with heap</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;cstdio></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;iostream></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;vector></span> </span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;queue></span></span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">ll</span> <span class="token expression"><span class="token keyword">long</span> <span class="token keyword">long</span> </span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">INF</span> <span class="token expression"><span class="token number">0x3f3f3f3f</span></span></span>
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token keyword">int</span> maxn <span class="token operator">=</span> <span class="token number">1009</span><span class="token punctuation">;</span>
+
+<span class="token keyword">using</span> <span class="token keyword">namespace</span> std<span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">edge</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> x<span class="token punctuation">,</span> d<span class="token punctuation">;</span>
+    <span class="token keyword">bool</span> <span class="token keyword">operator</span> <span class="token operator">&lt;</span><span class="token punctuation">(</span>edge b<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> b<span class="token punctuation">.</span>x <span class="token operator">&lt;</span> x<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token comment">// Adjacent graph</span>
+vector<span class="token operator">&lt;</span>edge<span class="token operator">></span> vec<span class="token punctuation">[</span>maxn<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> dis<span class="token punctuation">[</span>maxn<span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// D_S(x)</span>
+<span class="token keyword">bool</span> vis<span class="token punctuation">[</span>maxn<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// vis[x] = 1 if x in K</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> n<span class="token punctuation">,</span> m<span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span> <span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d %d"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>n<span class="token punctuation">,</span> <span class="token operator">&amp;</span>m<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> n <span class="token operator">+</span> m<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span>n<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            dis<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> INF<span class="token punctuation">;</span>
+            vis<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            vec<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">int</span> s<span class="token punctuation">,</span> t<span class="token punctuation">,</span> d<span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> m<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d %d %d %d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>s<span class="token punctuation">,</span> <span class="token operator">&amp;</span>t<span class="token punctuation">,</span> <span class="token operator">&amp;</span>d<span class="token punctuation">,</span> <span class="token operator">&amp;</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            vec<span class="token punctuation">[</span>s<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>edge<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>t<span class="token punctuation">,</span> d<span class="token punctuation">&#125;</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+            vec<span class="token punctuation">[</span>t<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>edge<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>s<span class="token punctuation">,</span> d<span class="token punctuation">&#125;</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">int</span> st<span class="token punctuation">,</span> ed<span class="token punctuation">;</span>
+        cin <span class="token operator">>></span> st <span class="token operator">>></span> ed<span class="token punctuation">;</span>
+ 
+        <span class="token comment">// start</span>
+        priority_queue<span class="token operator">&lt;</span>edge<span class="token operator">></span> que<span class="token punctuation">;</span>
+        que<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>edge<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>st<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">&#125;</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>que<span class="token punctuation">.</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            edge top <span class="token operator">=</span> que<span class="token punctuation">.</span><span class="token function">top</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            que<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">// If y is not in K, it's y*</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token operator">!</span>vis<span class="token punctuation">[</span>top<span class="token punctuation">.</span>x<span class="token punctuation">]</span> <span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                vis<span class="token punctuation">[</span>top<span class="token punctuation">.</span>x<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>         <span class="token comment">// Add to K</span>
+                dis<span class="token punctuation">[</span>top<span class="token punctuation">.</span>x<span class="token punctuation">]</span> <span class="token operator">=</span> top<span class="token punctuation">.</span>d<span class="token punctuation">;</span>     <span class="token comment">// D_S(x) = d_S(x)</span>
+
+                <span class="token comment">// Update N and d_S(y)</span>
+                <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> vec<span class="token punctuation">[</span>top<span class="token punctuation">.</span>x<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                    edge <span class="token operator">&amp;</span>e <span class="token operator">=</span> vec<span class="token punctuation">[</span>top<span class="token punctuation">.</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span><span class="token punctuation">(</span> vis<span class="token punctuation">[</span>edge<span class="token punctuation">.</span>x<span class="token punctuation">]</span><span class="token punctuation">)</span>
+                        <span class="token keyword">continue</span><span class="token punctuation">;</span>
+                    <span class="token keyword">if</span><span class="token punctuation">(</span> top<span class="token punctuation">.</span>d <span class="token operator">+</span> e<span class="token punctuation">.</span>d <span class="token operator">&lt;</span> dis<span class="token punctuation">[</span>e<span class="token punctuation">.</span>x<span class="token punctuation">]</span> <span class="token punctuation">)</span>
+                        que<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>edge<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>e<span class="token punctuation">.</span>x<span class="token punctuation">,</span> top<span class="token punctuation">.</span>d <span class="token operator">+</span> e<span class="token punctuation">.</span>d<span class="token punctuation">&#125;</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>vis<span class="token punctuation">[</span>ed<span class="token punctuation">]</span><span class="token punctuation">)</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d %d\n"</span><span class="token punctuation">,</span> dis<span class="token punctuation">[</span>ed<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>How to find shortest path ?</strong></p>
+<p>Introduce an extra array <code>pa[MAXN]</code>, when $y^*$ is added into $K$, let $pa[y^*]$ be the closet $x\in K$.<br>Then we can backtrack the path from <code>ed</code> back to the beginning.</p>
+<h2 id="2-Bellman-ford"><a href="#2-Bellman-ford" class="headerlink" title="2. Bellman-ford"></a>2. Bellman-ford</h2><p>If the graph contains negative edges, the equation (1) won’t hold true any longer, since $d_S(y, y^*)$ is no longer non-negative.</p>
+<p>Bellman-ford is proposed to solve this problem. It’s more general than Dijkstra. The pseudo-code  is:</p>
+<pre class="line-numbers language-none"><code class="language-none">dis[|V|] &#x3D; &#123;INF, INF, ..., INF&#125;
+dis[S] &#x3D; 0
+for i &#x3D; 1 to |V|-1
+    for e in E
+        dis[e.ed] &#x3D; min( dis[e.ed], dis[e.s] + e.dis)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Proof: $\forall v_i \in V$, if there are shortest paths (implies $v_i$ is reachable from $S$), consider the shortest path $P_i=[\phi_1, \phi_2, …, \phi_k]$ from $S$ to $v_i$, which means $\phi_1=S$ and $\phi_k=v_i$. </p>
+<p>No vertix $v_j \in V$ can appear twice in the path. Otherwise, there must be a path $P’=[\Phi_1, …, \Phi_k]$. </p>
+<ul>
+<li>If the length of $P’$ is positive, then obviously we chan trim the path to shorten length, leading to contradiction that $P_i$ is not the shortest path from $S$ to $v_i$. </li>
+<li>If the length of $P’$ is 0, it won’t hurt the fact that this is the shortest path. We can cherry-pick the simplified path without repeated vertices, the two shortest paths have equal shortest distances.</li>
+<li>If the length of $P’$ is negative, a negative loop is promised to exist. In that case, no shortest paths can exist.</li>
+</ul>
+<p>Now we can safely claim that any shortest path from $S$ contains # of vertices less than $|V|$. In fact, there are at most |V|-1 edges between $S$ and termination. In the first round of brute relaxation for all edges, for $\Phi_1$, $D_S(\Phi_1) = d_S(\Phi_1)$ is attained when edge $e=(S,\Phi_1)$ is relaxed (Otherwise there must be a shorter path from $S$ to $\Phi_1$). By induction we know that $D_S(\Phi_2)=D_S(\Phi_1) + d(\Phi_1, \Phi_2)=d_S(\Phi_2)$, then so on forward.</p>
+<p>If relaxation is made for all edges for |V|-1 rounds, all shortest paths will be completely updated, then $d_S(v)$ for all $v\in V$ turns out to be equal to $D_S(v)$. If $d_S(v)=\infty$, obvious it means $v$ is unreachable.</p>
+<p>The complexity is $O(|V|\cdot|E|)$.</p>
+<h2 id="3-Floyd-algorithm"><a href="#3-Floyd-algorithm" class="headerlink" title="3. Floyd algorithm"></a>3. Floyd algorithm</h2><p>Floyd algorithm is the generalization of Bellman-ford algorithm for all pais of points. We can prove the theorem by recursion. Consider the ${ n \choose 2}$ pairs. For $i\rightarrow j$, if the shortest path exists, let the path be $P_{ij}={v_1, v_2, …, v_m}$, where $v_1=i$ and $v_m=j$. Define $max(P_{ij})=\max_{l=1}^m v_l$. </p>
+<p>Now we prove the correctness by recursion. Given k, suppose we have already found shortest distance for all shortest paths that includes vertex with index less than $k-1$. Next, consider all pairs of $(i,j)$ with $max(P_{ij}) = k$. Let’s denote $k^+$ for the vertex in the right-hand side of $k$ in path $P_{ij}$, and $k^-$ for the reverse. There are two cases:</p>
+<ul>
+<li>k is on double-sides. Then $D(i,k)=D(i, k^-) + D(k^-, k)$ or $D(k,i)=D(k, k^+) + D(k^+, j)$. $D(k^-, k)$ or $D(k, k^+)$ are edges, known in advance. The rest parts are obviously subproblems with $max(P’)&lt;k$. By recursion, we can find the shortest distance.</li>
+<li>k is in the middle. Then $D(i,j) = D(i,k^-) + D(k^-, k) + D(k, k^+) + D(k^+, j)$. $D(k^-, k)$ and $D(k, k^+)$ are edges known in advance, and the rest parts are subproblem with $max(P’)&lt;k$. Obviously, we can find the shortest distance.</li>
+</ul>
+<p>Finally, consider the terminal condition. $k=1$ corresponds to the only path $P_{11}$. It’s surely solved, as $D(1,1)=0$ (otherwise there would be negative circles.)</p>
+<p>In practice, we can write the code by induction, from $k=1$ to $|V|$.</p>
+<pre class="line-numbers language-none"><code class="language-none">dp[|V|][|V|] &#x3D; G[|V|][|V|]       
+for k &#x3D; 1 to |V|              &#x2F;&#x2F; Bottom up for shortest paths max(P) &lt;&#x3D; k
+    for i &#x3D; 1 to |V|            
+        for j &#x3D; 1 to |V|        
+            if dis[k][j] !&#x3D; INF
+                dp[i][j] &#x3D; min(dp[i][j], dp[i][k] + dp[k][j])<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Key to understanding:</strong> Solvable paths are readily solved, don’t be confused by asking those pairs not currently solvable. </p>
 
                 
             </div>
@@ -506,7 +612,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://cjjun.github.io/2021/02/22/RL-part-1/">http://cjjun.github.io/2021/02/22/RL-part-1/</a>
+                    <a href="http://cjjun.github.io/2021/02/28/shortest-path/">http://cjjun.github.io/2021/02/28/shortest-path/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -544,16 +650,16 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/RL/">
-                                    <span class="chip bg-color">RL</span>
+                                <a href="/tags/Shortest-Path/">
+                                    <span class="chip bg-color">Shortest Path</span>
                                 </a>
                             
-                                <a href="/tags/MDP/">
-                                    <span class="chip bg-color">MDP</span>
+                                <a href="/tags/Dijkstra/">
+                                    <span class="chip bg-color">Dijkstra</span>
                                 </a>
                             
-                                <a href="/tags/DP/">
-                                    <span class="chip bg-color">DP</span>
+                                <a href="/tags/FLoyd/">
+                                    <span class="chip bg-color">FLoyd</span>
                                 </a>
                             
                         </div>
@@ -599,9 +705,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
                 <a href="/2021/02/28/shortest-path/">
                     <div class="card-image">
@@ -619,9 +726,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-02-28
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-28
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -630,6 +737,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -656,13 +764,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/02/21/git-commands/">
+                <a href="/2021/02/22/RL-part-1/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Git commands">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="RL introduction (I)--MDP and DP">
                         
-                        <span class="card-title">Git commands</span>
+                        <span class="card-title">RL introduction (I)--MDP and DP</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -673,7 +781,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-21
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-22
                             </span>
                         <span class="publish-author">
                             
@@ -686,8 +794,16 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/git/">
-                        <span class="chip bg-color">git</span>
+                    <a href="/tags/RL/">
+                        <span class="chip bg-color">RL</span>
+                    </a>
+                    
+                    <a href="/tags/MDP/">
+                        <span class="chip bg-color">MDP</span>
+                    </a>
+                    
+                    <a href="/tags/DP/">
+                        <span class="chip bg-color">DP</span>
                     </a>
                     
                 </div>
